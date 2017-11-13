@@ -5,6 +5,8 @@ import org.jenetics.engine.Engine;
 import org.jenetics.engine.EvolutionResult;
 import org.jenetics.util.Factory;
 
+import jahuwaldt.plot.*;
+
 public class Main {
 
     private static int eval(Genotype<BitGene> gt) {
