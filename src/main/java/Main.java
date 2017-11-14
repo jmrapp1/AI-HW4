@@ -24,14 +24,15 @@ public class Main {
         // 3.) Create the execution environment.
         Engine<BitGene, Integer> engine = Engine
                 .builder(Main::eval, gtf)
-                .populationSize(50)
+                .offspringFraction(0.75)
+                .populationSize(10)
                 .build();
 
         System.out.println(gtf);
         // 4.) Start the execution (evolution) and
         //     collect the result.
         Genotype<BitGene> result = engine.stream()
-                .limit(100)
+                .limit(10)
                 .collect(EvolutionResult.toBestGenotype());
         System.out.println(result);
     }
