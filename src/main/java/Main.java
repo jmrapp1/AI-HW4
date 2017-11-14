@@ -5,7 +5,6 @@ import org.jenetics.util.Factory;
 
 import jahuwaldt.plot.*;
 
-import java.math.BigInteger;
 import java.util.BitSet;
 
 public class Main {
@@ -22,7 +21,7 @@ public class Main {
         double func2 = getfunc2(x1, x2, x3, x4);
 
         double solution = func1 + func2;
-
+        return (int) solution;
     }
 
     public static void main(String[] args) {
@@ -36,12 +35,11 @@ public class Main {
                 .builder(Main::eval, gtf)
                 .populationSize(50)
                 .alterers(
-                    // new Crossover<>(0.1),
+                    new SinglePointCrossover<>(0.75),
                     new Mutator<>(0.001)
                 )
                 .build();
 
-        // System.out.println(gtf);
         // 4.) Start the execution (evolution) and
         //     collect the result.
         Genotype<BitGene> result = engine.stream()
@@ -51,22 +49,54 @@ public class Main {
         System.out.println(getXValue(result.getChromosome().as(BitChromosome.class), 0, 20));
     }
 
+    /**
+     * Gets the X1 value from the chromosome
+     *
+     * @param chromosome The chromosome
+     * @return The value of the bits of X1
+     */
     public static long getX1(BitChromosome chromosome) {
         return getXValue(chromosome, 0, 20);
     }
 
+    /**
+     * Gets the X2 value from the chromosome
+     *
+     * @param chromosome The chromosome
+     * @return The value of the bits of X2
+     */
     public static long getX2(BitChromosome chromosome) {
         return getXValue(chromosome, 20, 39);
     }
 
+    /**
+     * Gets the X3 value from the chromosome
+     *
+     * @param chromosome The chromosome
+     * @return The value of the bits of X3
+     */
     public static long getX3(BitChromosome chromosome) {
         return getXValue(chromosome, 39, 55);
     }
 
+    /**
+     * Gets the X4 value from the chromosome
+     *
+     * @param chromosome The chromosome
+     * @return The value of the bits of X4
+     */
     public static long getX4(BitChromosome chromosome) {
         return getXValue(chromosome, 55, 71);
     }
 
+    /**
+     * Get the value of some set of bits
+     *
+     * @param chromosome The chromosome
+     * @param startIndex The starting bit index
+     * @param endIndex The ending bit index
+     * @return The value of the set of bits
+     */
     public static long getXValue(BitChromosome chromosome, int startIndex, int endIndex) {
         BitSet value = chromosome.toBitSet().get(startIndex, endIndex);
         return value.toLongArray()[0];
