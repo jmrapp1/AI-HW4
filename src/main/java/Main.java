@@ -1,6 +1,4 @@
-import org.jenetics.BitChromosome;
-import org.jenetics.BitGene;
-import org.jenetics.Genotype;
+import org.jenetics.*;
 import org.jenetics.engine.Engine;
 import org.jenetics.engine.EvolutionResult;
 import org.jenetics.util.Factory;
@@ -19,20 +17,23 @@ public class Main {
         // 1.) Define the genotype (factory) suitable
         //     for the problem.
         Factory<Genotype<BitGene>> gtf =
-                Genotype.of(BitChromosome.of(10, 0.01));
+                Genotype.of(BitChromosome.of(10, 0.001));
 
         // 3.) Create the execution environment.
         Engine<BitGene, Integer> engine = Engine
                 .builder(Main::eval, gtf)
-                .offspringFraction(0.75)
-                .populationSize(10)
+                .populationSize(50)
+                .alterers(
+                    new Crossover<>(0.1),
+                    new Mutator<>(0.001)
+                )
                 .build();
 
         System.out.println(gtf);
         // 4.) Start the execution (evolution) and
         //     collect the result.
         Genotype<BitGene> result = engine.stream()
-                .limit(10)
+                .limit(100)
                 .collect(EvolutionResult.toBestGenotype());
         System.out.println(result);
     }
