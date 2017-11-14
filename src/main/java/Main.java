@@ -9,6 +9,9 @@ import java.util.BitSet;
 
 public class Main {
 
+    private static final double A = 0.43;
+    private static final double B = 1 - A;
+
     private static int eval(Genotype<BitGene> gt) {
         BitChromosome bitChromosome = gt.getChromosome()
                 .as(BitChromosome.class);
@@ -20,7 +23,7 @@ public class Main {
         long func1 = getfunc1(x1, x2, x3, x4);
         double func2 = getfunc2(x1, x2, x3, x4);
 
-        double solution = func1 + func2;
+        double solution = A * func1 + B * func2;
         return (int) solution;
     }
 
@@ -46,7 +49,6 @@ public class Main {
                 .limit(100)
                 .collect(EvolutionResult.toBestGenotype());
         System.out.println(result);
-        System.out.println(getXValue(result.getChromosome().as(BitChromosome.class), 0, 20));
     }
 
     /**
@@ -98,17 +100,15 @@ public class Main {
      * @return The value of the set of bits
      */
     public static long getXValue(BitChromosome chromosome, int startIndex, int endIndex) {
-        BitSet value = chromosome.toBitSet().get(startIndex, endIndex);
-        return value.toLongArray()[0];
+        BitSet bitSet = chromosome.toBitSet().get(startIndex, endIndex);
+        return bitSet.length() > 0 ? bitSet.toLongArray()[0] : 0;
     }
 
     public static long getfunc1(long x1, long x2, long x3, long x4) {
-        long f = 2 * x2 * x4 + x3 * (x1 - (2 * x4));
-        return f;
+        return 2 * x2 * x4 + x3 * (x1 - (2 * x4));
     }
 
     public static double getfunc2(long x1, long x2, long x3, long x4) {
-        double f2 = 60000 / (x3 * Math.pow((double) x1 - (2 * x4), 3) + (2 * x2 * x4 * (4 * Math.pow((double) x4, 2) + 3 * x1 * (x1 - (2 * x4)))));
-        return f2;
+        return 60000 / (x3 * Math.pow((double) x1 - (2 * x4), 3) + (2 * x2 * x4 * (4 * Math.pow((double) x4, 2) + 3 * x1 * (x1 - (2 * x4)))));
     }
 }
