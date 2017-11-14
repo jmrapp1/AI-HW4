@@ -17,7 +17,7 @@ public class Main {
         long x3 = getX3(bitChromosome);
         long x4 = getX4(bitChromosome);
 
-        long func1 = getfunc1(x1,x2,x3,x4);
+        long func1 = getfunc1(x1, x2, x3, x4);
         double func2 = getfunc2(x1, x2, x3, x4);
 
         double solution = func1 + func2;
@@ -35,8 +35,8 @@ public class Main {
                 .builder(Main::eval, gtf)
                 .populationSize(50)
                 .alterers(
-                    new SinglePointCrossover<>(0.75),
-                    new Mutator<>(0.001)
+                        new SinglePointCrossover<>(0.75),
+                        new Mutator<>(0.001)
                 )
                 .build();
 
@@ -94,7 +94,7 @@ public class Main {
      *
      * @param chromosome The chromosome
      * @param startIndex The starting bit index
-     * @param endIndex The ending bit index
+     * @param endIndex   The ending bit index
      * @return The value of the set of bits
      */
     public static long getXValue(BitChromosome chromosome, int startIndex, int endIndex) {
@@ -102,13 +102,13 @@ public class Main {
         return value.toLongArray()[0];
     }
 
-    public static long getfunc1(long x1, long x2, long x3, long x4){
-        long f = 2*x2* x4 + x3*(x1-(2*x4));
+    public static long getfunc1(long x1, long x2, long x3, long x4) {
+        long f = 2 * x2 * x4 + x3 * (x1 - (2 * x4));
         return f;
     }
 
-    public static double getfunc2(long x1, long x2, long x3, long x4){
-        double f2 = 60000 / (x3*Math.pow((double)x1-(2*x4), 3) + (2*x2*x4*(4*Math.pow((double)x4, 2)+ 3*x1*(x1-(2*x4)))));
+    public static double getfunc2(long x1, long x2, long x3, long x4) {
+        double f2 = 60000 / (x3 * Math.pow((double) x1 - (2 * x4), 3) + (2 * x2 * x4 * (4 * Math.pow((double) x4, 2) + 3 * x1 * (x1 - (2 * x4)))));
         return f2;
     }
 }
