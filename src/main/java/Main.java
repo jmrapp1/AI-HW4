@@ -1,9 +1,8 @@
+import com.sun.org.apache.bcel.internal.generic.POP;
 import org.jenetics.*;
 import org.jenetics.engine.Engine;
 import org.jenetics.engine.EvolutionResult;
 import org.jenetics.util.Factory;
-
-import jahuwaldt.plot.*;
 
 import java.util.BitSet;
 
@@ -11,10 +10,22 @@ public class Main {
 
     private static final double A = 0.43;
     private static final double B = 1 - A;
+    private static final double CROSSOVER_RATE = 0.75;
+    private static final double MUTATOR_RATE = 0.001;
+
+    private static final int CHROMOSOME_LENGTH = 71;
+    private static final int EVOLUTIONS = 100;
+    private static final int POPULATION = 50;
+
+    private static int evolutionCounter = 0;
+    private static double[] evolutionBestValues = new double[100];
 
     private static int eval(Genotype<BitGene> gt) {
-        BitChromosome bitChromosome = gt.getChromosome()
-                .as(BitChromosome.class);
+        return eval(gt.getChromosome().as(BitChromosome.class));
+    }
+
+    private static int eval(Chromosome<BitGene> chromosome) {
+        BitChromosome bitChromosome = chromosome.as(BitChromosome.class);
         long x1 = getX1(bitChromosome);
         long x2 = getX2(bitChromosome);
         long x3 = getX3(bitChromosome);
@@ -23,7 +34,8 @@ public class Main {
         long func1 = getfunc1(x1, x2, x3, x4);
         double func2 = getfunc2(x1, x2, x3, x4);
 
-        double solution = A * func1 + B * func2;
+        double solution = (A * func1 + B * func2);
+        solution /= 10 * 10 * 10 * 10; // Passing INT.MAX_VALUE so divide by 10 a few times to bring it down
         return (int) solution;
     }
 
@@ -31,24 +43,32 @@ public class Main {
         // 1.) Define the genotype (factory) suitable
         //     for the problem.
         Factory<Genotype<BitGene>> gtf =
-                Genotype.of(BitChromosome.of(71, 0.5));
+                Genotype.of(BitChromosome.of(CHROMOSOME_LENGTH, 0.5));
 
         // 3.) Create the execution environment.
         Engine<BitGene, Integer> engine = Engine
                 .builder(Main::eval, gtf)
-                .populationSize(50)
+                .populationSize(POPULATION)
                 .alterers(
-                        new SinglePointCrossover<>(0.75),
-                        new Mutator<>(0.001)
+                        new SinglePointCrossover<>(CROSSOVER_RATE),
+                        new Mutator<>(MUTATOR_RATE)
                 )
                 .build();
 
         // 4.) Start the execution (evolution) and
         //     collect the result.
         Genotype<BitGene> result = engine.stream()
-                .limit(100)
+                .peek(Main::handleEvolution)
+                .limit(EVOLUTIONS)
                 .collect(EvolutionResult.toBestGenotype());
-        System.out.println(result);
+
+        new Plot(EVOLUTIONS, evolutionBestValues);
+    }
+
+    private static void handleEvolution(EvolutionResult<BitGene, Integer> result) {
+        int best = result.getBestFitness();
+        evolutionBestValues[evolutionCounter] = best;
+        evolutionCounter++;
     }
 
     /**
