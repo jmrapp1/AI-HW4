@@ -17,7 +17,7 @@ public class Main {
         // 1.) Define the genotype (factory) suitable
         //     for the problem.
         Factory<Genotype<BitGene>> gtf =
-                Genotype.of(BitChromosome.of(10, 0.001));
+                Genotype.of(BitChromosome.of(71, 0.001));
 
         // 3.) Create the execution environment.
         Engine<BitGene, Integer> engine = Engine
