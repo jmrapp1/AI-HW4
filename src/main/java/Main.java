@@ -11,9 +11,12 @@ import java.util.BitSet;
 public class Main {
 
     private static int eval(Genotype<BitGene> gt) {
-        return gt.getChromosome()
-                .as(BitChromosome.class)
-                .bitCount();
+        BitChromosome bitChromosome = gt.getChromosome()
+                .as(BitChromosome.class);
+        long x1 = getX1(bitChromosome);
+        long x2 = getX2(bitChromosome);
+        long x3 = getX3(bitChromosome);
+        long x4 = getX4(bitChromosome);
     }
 
     public static void main(String[] args) {
@@ -40,7 +43,22 @@ public class Main {
                 .collect(EvolutionResult.toBestGenotype());
         System.out.println(result);
         System.out.println(getXValue(result.getChromosome().as(BitChromosome.class), 0, 20));
+    }
 
+    public static long getX1(BitChromosome chromosome) {
+        return getXValue(chromosome, 0, 20);
+    }
+
+    public static long getX2(BitChromosome chromosome) {
+        return getXValue(chromosome, 20, 39);
+    }
+
+    public static long getX3(BitChromosome chromosome) {
+        return getXValue(chromosome, 39, 55);
+    }
+
+    public static long getX4(BitChromosome chromosome) {
+        return getXValue(chromosome, 55, 71);
     }
 
     public static long getXValue(BitChromosome chromosome, int startIndex, int endIndex) {
