@@ -125,10 +125,10 @@ public class Main {
     }
 
     public static long getfunc1(long x1, long x2, long x3, long x4) {
-        return 2 * x2 * x4 + x3 * (x1 - (2 * x4));
+        return (2 * x2 * x4) + (x3 * (x1 - (2 * x4)));
     }
 
     public static double getfunc2(long x1, long x2, long x3, long x4) {
-        return 60000 / (x3 * Math.pow((double) x1 - (2 * x4), 3) + (2 * x2 * x4 * (4 * Math.pow((double) x4, 2) + 3 * x1 * (x1 - (2 * x4)))));
+        return 60000 / ((x3 * Math.pow((double) x1 - (2 * x4), 3)) + (2 * x2 * x4 * (4 * Math.pow((double) x4, 2) + (3 * x1 * (x1 - (2 * x4))))));
     }
 }
