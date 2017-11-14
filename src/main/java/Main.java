@@ -17,6 +17,12 @@ public class Main {
         long x2 = getX2(bitChromosome);
         long x3 = getX3(bitChromosome);
         long x4 = getX4(bitChromosome);
+
+        long func1 = getfunc1(x1,x2,x3,x4);
+        double func2 = getfunc2(x1, x2, x3, x4);
+
+        double solution = func1 + func2;
+
     }
 
     public static void main(String[] args) {
@@ -66,4 +72,13 @@ public class Main {
         return value.toLongArray()[0];
     }
 
+    public static long getfunc1(long x1, long x2, long x3, long x4){
+        long f = 2*x2* x4 + x3*(x1-(2*x4));
+        return f;
+    }
+
+    public static double getfunc2(long x1, long x2, long x3, long x4){
+        double f2 = 60000 / (x3*Math.pow((double)x1-(2*x4), 3) + (2*x2*x4*(4*Math.pow((double)x4, 2)+ 3*x1*(x1-(2*x4)))));
+        return f2;
+    }
 }
