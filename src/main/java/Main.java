@@ -5,6 +5,9 @@ import org.jenetics.util.Factory;
 
 import jahuwaldt.plot.*;
 
+import java.math.BigInteger;
+import java.util.BitSet;
+
 public class Main {
 
     private static int eval(Genotype<BitGene> gt) {
@@ -36,13 +39,13 @@ public class Main {
                 .limit(100)
                 .collect(EvolutionResult.toBestGenotype());
         System.out.println(result);
-        System.out.println(result.getChromosome().as(BitChromosome.class).toBigInteger());
+        System.out.println(getXValue(result.getChromosome().as(BitChromosome.class), 0, 20));
+
     }
 
-    /*public int getXValue(BitChromosome chromosome, int startIndex, int endIndex) {
-        for (int i = startIndex; i < endIndex; i++) {
-
-        }
-    }*/
+    public static long getXValue(BitChromosome chromosome, int startIndex, int endIndex) {
+        BitSet value = chromosome.toBitSet().get(startIndex, endIndex);
+        return value.toLongArray()[0];
+    }
 
 }
