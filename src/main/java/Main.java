@@ -1,3 +1,17 @@
+/* ******************************************************************
+************
+Author’s name(s): Emily DeMarco, Nick Boyd, Jon Rapp
+Course Title: Artificial Intelligence
+Semester: Fall 2017
+Assignment Number: HW 4
+Submission Date: 11/27/17
+Purpose: This program uses a Java GA Library to perform enginerring design optimization for an I-beam.
+Input: none
+Output: The 100 generation's bests & 4 graphs.
+Help: Acknowledge any help you might have received or simply indicate that you
+worked alone.
+*********************************************************************
+********* */
 import com.sun.org.apache.bcel.internal.generic.POP;
 import org.jenetics.*;
 import org.jenetics.engine.Engine;
@@ -25,10 +39,19 @@ public class Main {
     private static double averageF1 = 0;
     private static double averageF2 = 0;
 
+    //******************************************************
+//*** Purpose: This method is used to evaluate a chromosome.
+//*** Input: a Genotype
+//*** Output: an integer
+//******************************************************
     private static int eval(Genotype<BitGene> gt) {
         return eval(gt.getChromosome().as(BitChromosome.class));
     }
-
+    //******************************************************
+//*** Purpose: This method is used to evaluate a chromosome.
+//*** Input: a chromosome
+//*** Output: an integer
+//******************************************************
     private static int eval(Chromosome<BitGene> chromosome) {
         BitChromosome bitChromosome = chromosome.as(BitChromosome.class);
         // Get individual x values from chromosome
@@ -70,12 +93,16 @@ public class Main {
                 .limit(EVOLUTIONS)
                 .collect(EvolutionResult.toBestGenotype());
 
-        new Plot(EVOLUTIONS, evolutionBestValuesF1, "Best Func1");
-        new Plot(EVOLUTIONS, evolutionBestValuesF2, "Best Func2");
-        new Plot(EVOLUTIONS, evolutionAverageValuesF1, "Average Func1");
-        new Plot(EVOLUTIONS, evolutionAverageValuesF2, "Average Func2");
+        new Plot(EVOLUTIONS, evolutionBestValuesF1, "Cross Section Area");
+        new Plot(EVOLUTIONS, evolutionBestValuesF2, "Static Deflection");
+        new Plot(EVOLUTIONS, evolutionAverageValuesF1, "Cross Section Area");
+        new Plot(EVOLUTIONS, evolutionAverageValuesF2, "Static Deflection");
     }
-
+    //******************************************************
+//*** Purpose: This method is used to run the evolution and find the fitness values.
+//*** Input: an evolutionResult
+//*** Output: none.
+//******************************************************
     private static void handleEvolution(EvolutionResult<BitGene, Integer> result) {
         BitChromosome bitChromosome = result.getBestPhenotype().getGenotype().getChromosome().as(BitChromosome.class);
         // Get individual x values from chromosome
@@ -106,12 +133,11 @@ public class Main {
         evolutionCounter++;
     }
 
-    /**
-     * Gets the X1 value from the chromosome
-     *
-     * @param chromosome The chromosome
-     * @return The value of the bits of X1
-     */
+
+//*** Purpose: This method is used to get the x1 value from the chromosome.
+//*** Input: chromosome
+//*** Output: double containing the value of the bits of X1
+//******************************************************
     public static double getX1(BitChromosome chromosome) {
         long chromValue = getChromosomeValue(chromosome, 0, 20);
         return calculateXValue(chromValue, 20, 10, 80);
@@ -128,76 +154,64 @@ public class Main {
         return calculateXValue(chromValue, 19, 10, 50);
     }
 
-    /**
-     * Gets the X3 value from the chromosome
-     *
-     * @param chromosome The chromosome
-     * @return The value of the bits of X3
-     */
+
+    //******************************************************
+//*** Purpose: This method gets the X3 value from the chromosome.
+//*** Input: chromosome
+//*** Output: a double containing the value of the bits of x3
+//******************************************************
     public static double getX3(BitChromosome chromosome) {
         long chromValue = getChromosomeValue(chromosome, 39, 55);
         return calculateXValue(chromValue, 16, 0.9, 5.0);
     }
 
-    /**
-     * Gets the X4 value from the chromosome
-     *
-     * @param chromosome The chromosome
-     * @return The value of the bits of X4
-     */
+
+//*** Purpose: This method gets the X4 value from the chromosome.
+//*** Input: chromosome
+//*** Output: a double containing the value of the bits of x4
+//******************************************************
     public static double getX4(BitChromosome chromosome) {
         long chromValue = getChromosomeValue(chromosome, 55, 71);
         return calculateXValue(chromValue, 16, 0.9, 5.0);
     }
 
-    /**
-     * Get the value of some set of bits
-     *
-     * @param chromosome The chromosome
-     * @param startIndex The starting bit index
-     * @param endIndex   The ending bit index
-     * @return The value of the set of bits
-     */
+
+    //******************************************************
+//*** Purpose: This method gets the value of some set of bits.
+//*** Input: chromosome, startindex integer, endindex intger
+//*** Output: the value of the set of bits
+//******************************************************
     public static long getChromosomeValue(BitChromosome chromosome, int startIndex, int endIndex) {
         BitSet bitSet = chromosome.toBitSet().get(startIndex, endIndex);
         return bitSet.length() > 0 ? bitSet.toLongArray()[0] : 0;
     }
 
-    /**
-     * Calculate the value for some X variable and clamp between min and max
-     *
-     * @param chromValue The value from the chromosome
-     * @param chromBinLength The chromosome binary length of the variable
-     * @param min The min value
-     * @param max The max value
-     * @return The value
-     */
+
+    //******************************************************
+//*** Purpose: This method gets the value for some x variable and clamp between min and max.
+//*** Input: long chromvalue, int chrombinlength which contains the binary length of the variable
+    //*** double min and double max
+//*** Output: a double containing the value
+//******************************************************
     private static double calculateXValue(long chromValue, int chromBinLength, double min, double max) {
         return min + (chromValue * ((max - min) / (Math.pow(2, chromBinLength) - 1)));
     }
 
-    /**
-     * Calculate the fitness for function 1
-     *
-     * @param x1 The x1 value
-     * @param x2 The x2 value
-     * @param x3 The x3 value
-     * @param x4 The x4 value
-     * @return The fitness
-     */
+    //******************************************************
+//*** Purpose: This method gets the fitness value function 1.
+//*** Input: the 4 double x values
+//*** Output: a double containing the value of function 1 fitness
+//******************************************************
     public static double getfunc1(double x1, double x2, double x3, double x4) {
         return (2 * x2 * x4) + (x3 * (x1 - (2 * x4)));
     }
 
-    /**
-     * Calculate the fitness for function 2
-     *
-     * @param x1 The x1 value
-     * @param x2 The x2 value
-     * @param x3 The x3 value
-     * @param x4 The x4 value
-     * @return The fitness
-     */
+
+    //******************************************************
+//*** Purpose: This method gets the fitness value function 2.
+//*** Input: the 4 double x values
+//*** Output: a double containing the value of function 2 fitness
+//******************************************************
     public static double getfunc2(double x1, double x2, double x3, double x4) {
         return 60000 / ((x3 * Math.pow(x1 - (2 * x4), 3)) + (2 * x2 * x4 * (4 * Math.pow(x4, 2) + (3 * x1 * (x1 - (2 * x4))))));
     }
