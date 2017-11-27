@@ -63,6 +63,7 @@ public class Main {
                 .collect(EvolutionResult.toBestGenotype());
 
         new Plot(EVOLUTIONS, evolutionBestValues);
+
     }
 
     private static void handleEvolution(EvolutionResult<BitGene, Integer> result) {
