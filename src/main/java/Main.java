@@ -22,8 +22,8 @@ import java.util.BitSet;
 
 public class Main {
 
-    private static final double A = 0.43; // The A weight for func 1
-    private static final double B = 1 - A; // The B weight for func 2
+    private static final double A = 0; // The A weight for func 1
+    private static final double B = 1; // The B weight for func 2
     private static final double CROSSOVER_RATE = 0.75; // Crossover weight
     private static final double MUTATOR_RATE = 0.001; // Mutator weight
 
@@ -65,7 +65,7 @@ public class Main {
         double func2 = getfunc2(x1, x2, x3, x4);
 
         // Combine and add weight
-        double solution = (A * func1 + B * func2);
+        double solution = (A * func1 + B * func2) *1000; //multiple by 1000 because we cast the double to an int
         return (int) solution;
     }
 
@@ -74,6 +74,7 @@ public class Main {
         //     for the problem.
         Factory<Genotype<BitGene>> gtf =
                 Genotype.of(BitChromosome.of(CHROMOSOME_LENGTH, 0.5));
+
 
         // 3.) Create the execution environment.
         Engine<BitGene, Integer> engine = Engine
@@ -110,6 +111,7 @@ public class Main {
         double x2 = getX2(bitChromosome);
         double x3 = getX3(bitChromosome);
         double x4 = getX4(bitChromosome);
+
 
         // Get function values
         double func1 = getfunc1(x1, x2, x3, x4);
@@ -213,7 +215,8 @@ public class Main {
 //*** Output: a double containing the value of function 2 fitness
 //******************************************************
     public static double getfunc2(double x1, double x2, double x3, double x4) {
-        return 60000 / ((x3 * Math.pow(x1 - (2 * x4), 3)) + (2 * x2 * x4 * (4 * Math.pow(x4, 2) + (3 * x1 * (x1 - (2 * x4))))));
+        return (60000 / ((x3 * Math.pow(x1 - (2 * x4), 3)) + (2 * x2 * x4 * (4 * Math.pow(x4, 2) + (3 * x1 * (x1 - (2 * x4)))))));
+
     }
 
 }
