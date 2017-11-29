@@ -22,8 +22,8 @@ import java.util.BitSet;
 
 public class Main {
 
-    private static final double A = 0.43; // The A weight for func 1
-    private static final double B = 1 - A; // The B weight for func 2
+    private static final double A = 0; // The A weight for func 1
+    private static final double B = 1; // The B weight for func 2
     private static final double CROSSOVER_RATE = 0.75; // Crossover weight
     private static final double MUTATOR_RATE = 0.001; // Mutator weight
 
@@ -65,7 +65,7 @@ public class Main {
         double func2 = getfunc2(x1, x2, x3, x4);
 
         // Combine and add weight
-        double solution = (A * func1 + B * func2);
+        double solution = (A * func1 + B * func2) * 10000; // multiple by 1000 to get rid of decimal
         return (int) solution;
     }
 
