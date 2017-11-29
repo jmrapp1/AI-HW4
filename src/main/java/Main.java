@@ -75,7 +75,6 @@ public class Main {
         Factory<Genotype<BitGene>> gtf =
                 Genotype.of(BitChromosome.of(CHROMOSOME_LENGTH, 0.5));
 
-
         // 3.) Create the execution environment.
         Engine<BitGene, Integer> engine = Engine
                 .builder(Main::eval, gtf)
@@ -111,7 +110,6 @@ public class Main {
         double x2 = getX2(bitChromosome);
         double x3 = getX3(bitChromosome);
         double x4 = getX4(bitChromosome);
-
 
         // Get function values
         double func1 = getfunc1(x1, x2, x3, x4);
